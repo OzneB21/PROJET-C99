@@ -1,0 +1,9 @@
+# Compiled output
+main
+*.o
+*.out
+
+# macOS
+.DS_Store
+
+.vscode/*
