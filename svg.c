@@ -82,7 +82,7 @@ Forme *create_shape()
         return NULL;
     // Creer l'enum et demander a l'utilisateur quelle forme ?
 
-    printf(" 1.RECTANGLE\n  2.LIGNE\n  3.OVALE\n");
+    printf(" 1.LIGNE\n  2.OVALE\n  3.RECTANGLE\n");
     int choice = ask_for_int("Which shape do you choose?\n");
     EnumFormes *enum_forme = malloc(sizeof(EnumFormes));
     UnionFormes *union_forme = malloc(sizeof(UnionFormes));

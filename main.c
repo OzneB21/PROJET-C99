@@ -72,7 +72,7 @@ int main(void)
         printf(BOLD_MAGENTA "    ============[MENU]============\n" RESET);
         printf("    |   " BOLD_CYAN "1" RESET BOLD_YELLOW " -" UNDERLINE "Create a new shape" RESET
                "   |   \n");
-        printf("    |   " BOLD_CYAN "2" RESET BOLD_YELLOW "2 -" UNDERLINE "Modify the shape" RESET
+        printf("    |   " BOLD_CYAN "2" RESET BOLD_YELLOW " -" UNDERLINE "Modify the shape" RESET
                "     |   \n");
         printf("    |   " BOLD_CYAN "3" RESET BOLD_YELLOW " -" UNDERLINE "Erased the shape" RESET
                "     |   \n");

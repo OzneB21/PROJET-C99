@@ -50,9 +50,9 @@ void print_svg(Forme **forme);
 
 int export_svg(Forme **forme, const char *filename);
 
-void svg_rectangle(FILE *file, Rectangle *rectangle);
+void svg_rect(FILE *file, Rectangle *rectangle);
 
-void svg_ovale(FILE *file, Ovale *ovale);
+void svg_ellipse(FILE *file, Ovale *ovale);
 
 void svg_line(FILE *file, Ligne *line);
 
