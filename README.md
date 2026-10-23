@@ -73,4 +73,4 @@ make clean
 ***
 
 
-[ My Linkedin](www.linkedin.com/in/enzo-baroni-71a03b21b)
+[ My Linkedin](https://www.linkedin.com/in/enzo-baroni-71a03b21b)
