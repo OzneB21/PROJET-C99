@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
-#include "formes.h"
+#include "shapes.h"
 #include "svg.h"
 #include "color.h"
 
@@ -10,7 +10,7 @@
  *
  * @return The validated shape index, or -1 if invalid.
  */
-static int ask_shape_index(void)
+int ask_shape_index(void)
 {
     int index = ask_for_int("Shape index (0-49): ");
     if (index < 0 || index >= SVG_CAPACITY)
@@ -29,7 +29,7 @@ int main(void)
 {
 
     char menu;
-    Forme **svg = create_svg();
+    Shape **svg = create_svg();
     if (svg == NULL)
     {
         fprintf(stderr, "Unable to allocate the shape collection.\n");

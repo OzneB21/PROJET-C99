@@ -2,58 +2,58 @@
 #define SVG
 #include <errno.h>
 #include <stdio.h>
-#include "formes.h"
+#include "shapes.h"
 
 #define SVG_CAPACITY 50
 
 typedef enum
 {
     RECTANGLE,
-    OVALE,
-    LIGNE
-} EnumFormes;
+    OVAL,
+    LINE
+} EnumShapes;
 
 typedef union
 {
     Rectangle *rectangle;
-    Ovale *ovale;
-    Ligne *ligne;
-} UnionFormes;
+    Oval *oval;
+    Line *line;
+} UnionShapes;
 
 typedef struct
 {
-    EnumFormes *enumformes;
-    UnionFormes *unionformes;
-} Forme;
+    EnumShapes *enumshapes;
+    UnionShapes *unionshapes;
+} Shape;
 
-Forme *create_forme_at();
+Shape *create_shape_at();
 
-Forme *create_shape();
+Shape *create_shape();
 
-Forme **create_svg();
+Shape **create_svg();
 
-void free_svg(Forme **forme);
+void free_svg(Shape **shape);
 
-void print_formes(Forme *forme);
+void print_shapes(Shape *shape);
 
-void free_forme(Forme *forme);
+void free_shape(Shape *shape);
 
-void modify_shape(Forme *forme);
+void modify_shape(Shape *shape);
 
-void insert_new_shape_at(Forme **forme, size_t index);
+void insert_new_shape_at(Shape **shape, size_t index);
 
-void modify_shape_at(Forme **forme, size_t index);
+void modify_shape_at(Shape **shape, size_t index);
 
-void remove_shape_at(Forme **forme, size_t index);
+void remove_shape_at(Shape **shape, size_t index);
 
-void print_svg(Forme **forme);
+void print_svg(Shape **shape);
 
-int export_svg(Forme **forme, const char *filename);
+int export_svg(Shape **shape, const char *filename);
 
 void svg_rect(FILE *file, Rectangle *rectangle);
 
-void svg_ellipse(FILE *file, Ovale *ovale);
+void svg_oval(FILE *file, Oval *oval);
 
-void svg_line(FILE *file, Ligne *line);
+void svg_line(FILE *file, Line *line);
 
 #endif

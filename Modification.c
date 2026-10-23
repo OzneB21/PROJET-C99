@@ -1,12 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "formes.h"
+#include "shapes.h"
 
 #define MODIFY_MENU_POINT "Choose the modification:\n\t1. X coordinate\n\t2. Y coordinate\n\t0. Exit\nChoice : "
 #define MODIFY_MENU_STYLE "Choose the modification:\n\t1. the color\n\t2. the color border\n\t3. the translate\n\t4. the rotate\n\t0. Exit\nChoice : "
-#define MODIFY_MENU_OVALE "Choose the modification:\n\t1. the new coordinate (X,Y)\n\t2. the new styles\n\t3. the new radius height\n\t4. the new radius width\n\t0. Exit\nChoice : "
+#define MODIFY_MENU_OVAL "Choose the modification:\n\t1. the new coordinate (X,Y)\n\t2. the new styles\n\t3. the new radius height\n\t4. the new radius width\n\t0. Exit\nChoice : "
 #define MODIFY_MENU_RECTANGLE "Choose the modification:\n\t1. the new coordinate (X,Y)\n\t2. the new styles\n\t3. the new length\n\t4. the new width\n\t0. Exit\nChoice : "
-#define MODIFY_MENU_LIGNE "Choose the modification:\n\t1. the new coordinate of point A (X,Y)\n\t2. the new coordinate of point B (X,Y)\n\t3. the new style\n\t0. Exit\nChoice : "
+#define MODIFY_MENU_LINE "Choose the modification:\n\t1. the new coordinate of point A (X,Y)\n\t2. the new coordinate of point B (X,Y)\n\t3. the new style\n\t0. Exit\nChoice : "
 
 /**
  * @brief Modifies the properties of a Point structure based on user input.
@@ -75,27 +75,27 @@ void modify_style(Style *style)
  * coordinates of point A, the style, radius height, and radius width of the Ovale.
  * The user can choose to modify each property or exit the modification process.
  *
- * @param ovale Pointer to the Ovale structure to be modified.
+ * @param oval Pointer to the Ovale structure to be modified.
  */
-void modify_ovale(Ovale *ovale)
+void modify_oval(Oval *oval)
 {
     int choice;
     do
     {
-        choice = ask_for_int(MODIFY_MENU_OVALE);
+        choice = ask_for_int(MODIFY_MENU_OVAL);
         switch (choice)
         {
         case 1:
-            modify_point(ovale->A);
+            modify_point(oval->A);
             break;
         case 2:
-            modify_style(ovale->S);
+            modify_style(oval->S);
             break;
         case 3:
-            ovale->rayon_hauteur = ask_for_float("Select the radius height : ");
+            oval->height_radius = ask_for_float("Select the radius height : ");
             break;
         case 4:
-            ovale->rayon_largeur = ask_for_float("Select the radius width : ");
+            oval->width_radius = ask_for_float("Select the radius width : ");
             break;
         }
     } while (choice != 0);
@@ -125,10 +125,10 @@ void modify_rectangle(Rectangle *rectangle)
             modify_style(rectangle->S);
             break;
         case 3:
-            rectangle->longueur = ask_for_float("Select the new length : ");
+            rectangle->length = ask_for_float("Select the new length : ");
             break;
         case 4:
-            rectangle->largeur = ask_for_float("Select the new width : ");
+            rectangle->width = ask_for_float("Select the new width : ");
             break;
         }
     } while (choice != 0);
@@ -141,24 +141,24 @@ void modify_rectangle(Rectangle *rectangle)
  * coordinates of points A and B, as well as the style of the Ligne. The user
  * can choose to modify each property or exit the modification process.
  *
- * @param ligne Pointer to the Ligne structure to be modified.
+ * @param line Pointer to the Ligne structure to be modified.
  */
-void modify_ligne(Ligne *ligne)
+void modify_line(Line *line)
 {
     int choice;
     do
     {
-        choice = ask_for_int(MODIFY_MENU_LIGNE);
+        choice = ask_for_int(MODIFY_MENU_LINE);
         switch (choice)
         {
         case 1:
-            modify_point(ligne->A);
+            modify_point(line->A);
             break;
         case 2:
-            modify_point(ligne->B);
+            modify_point(line->B);
             break;
         case 3:
-            modify_style(ligne->S);
+            modify_style(line->S);
             break;
         }
     } while (choice != 0);

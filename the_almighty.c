@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "formes.h"
+#include "shapes.h"
 #include <errno.h>
 
 /**
@@ -12,16 +12,16 @@
  *
  * @param point Pointer to the Point structure to be modified.
  */
-Ovale *create_ovale(float rayon_hauteur, float rayon_largeur, Point *A, Style *S)
+Oval *create_oval(float height_radius, float width_radius, Point *A, Style *S)
 {
-    Ovale *ovale = malloc(sizeof(Ovale));
-    if (ovale == NULL)
+    Oval *oval = malloc(sizeof(Oval));
+    if (oval == NULL)
         return NULL;
-    ovale->A = A;
-    ovale->S = S;
-    ovale->rayon_hauteur = rayon_hauteur;
-    ovale->rayon_largeur = rayon_largeur;
-    return ovale;
+    oval->A = A;
+    oval->S = S;
+    oval->height_radius = height_radius;
+    oval->width_radius = width_radius;
+    return oval;
 }
 
 /**
@@ -33,36 +33,36 @@ Ovale *create_ovale(float rayon_hauteur, float rayon_largeur, Point *A, Style *S
  *
  * @param style Pointer to the Style structure to be modified.
  */
-Rectangle *create_rectangle(float largeur, float longueur, Point *A, Style *S)
+Rectangle *create_rectangle(float width, float length, Point *A, Style *S)
 {
     Rectangle *rectangle = malloc(sizeof(Rectangle));
     if (rectangle == NULL)
         return NULL;
     rectangle->A = A;
     rectangle->S = S;
-    rectangle->largeur = largeur;
-    rectangle->longueur = longueur;
+    rectangle->width = width;
+    rectangle->length = length;
     return rectangle;
 }
 
 /**
- * @brief Modifies the properties of a Ligne structure based on user input.
+ * @brief Modifies the properties of a Line structure based on user input.
  *
  * This function presents a menu to the user, allowing them to modify the
- * coordinates of points A and B, as well as the style of the Ligne. The user
+ * coordinates of points A and B, as well as the style of the Line. The user
  * can choose to modify each property or exit the modification process.
  *
- * @param ligne Pointer to the Ligne structure to be modified.
+ * @param line Pointer to the Line structure to be modified.
  */
-Ligne *create_ligne(Point *A, Point *B, Style *S)
+Line *create_line(Point *A, Point *B, Style *S)
 {
-    Ligne *ligne = malloc(sizeof(Ligne));
-    if (ligne == NULL)
+    Line *line = malloc(sizeof(Line));
+    if (line == NULL)
         return NULL;
-    ligne->A = A;
-    ligne->B = B;
-    ligne->S = S;
-    return ligne;
+    line->A = A;
+    line->B = B;
+    line->S = S;
+    return line;
 }
 
 /**
@@ -134,20 +134,20 @@ void free_style(Style *style)
 }
 
 /**
- * @brief Frees the memory allocated for an Ovale structure.
+ * @brief Frees the memory allocated for an Oval structure.
  *
- * This function releases the memory occupied by the specified Ovale structure,
+ * This function releases the memory occupied by the specified Oval structure,
  * including its associated Point and Style structures.
  *
- * @param ovale Pointer to the Ovale structure to be freed.
+ * @param oval Pointer to the Oval structure to be freed.
  */
-void free_ovale(Ovale *ovale)
+void free_oval(Oval *oval)
 {
-    if (ovale == NULL)
+    if (oval == NULL)
         return;
-    free_style(ovale->S);
-    free_point(ovale->A);
-    free(ovale);
+    free_style(oval->S);
+    free_point(oval->A);
+    free(oval);
 }
 
 /**
@@ -168,21 +168,21 @@ void free_rectangle(Rectangle *rectangle)
 }
 
 /**
- * @brief Frees the memory allocated for a Ligne structure.
+ * @brief Frees the memory allocated for a Line structure.
  *
- * This function releases the memory occupied by the specified Ligne structure,
+ * This function releases the memory occupied by the specified Line structure,
  * including its associated Point and Style structures.
  *
- * @param ligne Pointer to the Ligne structure to be freed.
+ * @param line Pointer to the Line structure to be freed.
  */
-void free_ligne(Ligne *ligne)
+void free_line(Line *line)
 {
-    if (ligne == NULL)
+    if (line == NULL)
         return;
-    free_style(ligne->S);
-    free_point(ligne->A);
-    free_point(ligne->B);
-    free(ligne);
+    free_style(line->S);
+    free_point(line->A);
+    free_point(line->B);
+    free(line);
 }
 
 /**
@@ -226,44 +226,44 @@ void print_Rectangle(Rectangle *rectangle)
 {
     if (rectangle == NULL)
         return;
-    printf("RECTANGLE (%.2f %.2f)\n", rectangle->largeur, rectangle->longueur);
+    printf("RECTANGLE (%.2f %.2f)\n", rectangle->width, rectangle->length);
     print_Point(rectangle->A);
     print_Style(rectangle->S);
 }
 
 /**
- * @brief Prints the properties of an Ovale structure to the console.
+ * @brief Prints the properties of an Oval structure to the console.
  *
- * This function displays the height radius, width radius, coordinates of point A,
- * and style of the specified Ovale structure.
+ * This function displays the height radius, width_radius, coordinates of point A,
+ * and style of the specified Oval structure.
  *
- * @param ovale Pointer to the Ovale structure to be printed.
+ * @param oval Pointer to the Oval structure to be printed.
  */
-void print_Ovale(Ovale *ovale)
+void print_Oval(Oval *oval)
 {
-    if (ovale == NULL)
+    if (oval == NULL)
         return;
-    printf("OVALE (%.2f %.2f)\n", ovale->rayon_hauteur, ovale->rayon_largeur);
-    print_Point(ovale->A);
-    print_Style(ovale->S);
+    printf("OVAL (%.2f %.2f)\n", oval->height_radius, oval->width_radius);
+    print_Point(oval->A);
+    print_Style(oval->S);
 }
 
 /**
- * @brief Prints the properties of a Ligne structure to the console.
+ * @brief Prints the properties of a Line structure to the console.
  *
  * This function displays the coordinates of points A and B, as well as the style
- * of the specified Ligne structure.
+ * of the specified Line structure.
  *
- * @param ligne Pointer to the Ligne structure to be printed.
+ * @param line Pointer to the Line structure to be printed.
  */
-void print_Ligne(Ligne *ligne)
+void print_Line(Line *line)
 {
-    if (ligne == NULL)
+    if (line == NULL)
         return;
-    printf("LIGNE\n");
-    print_Point(ligne->A);
-    print_Point(ligne->B);
-    print_Style(ligne->S);
+    printf("LINE\n");
+    print_Point(line->A);
+    print_Point(line->B);
+    print_Style(line->S);
 }
 
 /**
@@ -328,10 +328,10 @@ char ask_for_char(char *message)
  */
 Style *ask_for_style(void)
 {
-    char color = ask_for_char("Quelle couleur de fond voulez-vous?\n");
-    char color_border = ask_for_char("Quelle couleur pour la bordure voulez-vous?\n");
-    float translate = ask_for_float("Quelle est la translation que vous souhaitez?\n");
-    float rotate = ask_for_float("Quelle est la rotation que vous souhaitez?\n");
+    char color = ask_for_char("What background color is preferred?\n");
+    char color_border = ask_for_char("What border color would you like?\n");
+    float translate = ask_for_float("Could you specify the translation you need?\n");
+    float rotate = ask_for_float("Which rotation do you desire?\n");
 
     return create_style(color, color_border, translate, rotate);
 }
@@ -347,23 +347,23 @@ Style *ask_for_style(void)
 Point *ask_for_point(void)
 {
     return create_point(
-        ask_for_float("Quelle est la latitude : x souhaitée?\n"),
-        ask_for_float("Quelle est la longitude : y souhaitée?\n"));
+        ask_for_float("Which rotation do you desire?\n"),
+        ask_for_float("What is the desired longitude: y?\n"));
 }
 
 /**
- * @brief Asks the user for an Ovale structure with its properties.
+ * @brief Asks the user for an Oval structure with its properties.
  *
- * This function prompts the user to enter the height radius, width radius,
- * coordinates of point A, and style for an Ovale structure. It then creates
- * and returns a new Ovale structure with the provided values.
+ * This function prompts the user to enter the height radius, width_radius,
+ * coordinates of point A, and style for an Oval structure. It then creates
+ * and returns a new Oval structure with the provided values.
  *
- * @return A pointer to the newly created Ovale structure, or NULL if memory allocation fails.
+ * @return A pointer to the newly created Oval structure, or NULL if memory allocation fails.
  */
-Ovale *ask_for_ovale(void)
+Oval *ask_for_oval(void)
 {
-    float rayon_hauteur = ask_for_float("Quelle est la hauteur souhaitée?\n");
-    float rayon_largeur = ask_for_float("Quelle est la largeur souhaitée?\n");
+    float height_radius = ask_for_float("What is the desired height?\n");
+    float width_radius = ask_for_float("What is the targeted width?\n");
     Point *point = ask_for_point();
     if (point == NULL)
         return NULL;
@@ -374,13 +374,13 @@ Ovale *ask_for_ovale(void)
         return NULL;
     }
 
-    Ovale *ovale = create_ovale(rayon_hauteur, rayon_largeur, point, style);
-    if (ovale == NULL)
+    Oval *oval = create_oval(height_radius, width_radius, point, style);
+    if (oval == NULL)
     {
         free_point(point);
         free_style(style);
     }
-    return ovale;
+    return oval;
 }
 
 /**
@@ -394,8 +394,8 @@ Ovale *ask_for_ovale(void)
  */
 Rectangle *ask_for_rectangle(void)
 {
-    float largeur = ask_for_float("Quelle est la largeur souhaitée?\n");
-    float longueur = ask_for_float("Quelle est la longueur souhaitée?\n");
+    float width = ask_for_float("What is the targeted width?\n");
+    float length = ask_for_float("What is the desired length?\n");
     Point *point = ask_for_point();
     if (point == NULL)
         return NULL;
@@ -406,7 +406,7 @@ Rectangle *ask_for_rectangle(void)
         return NULL;
     }
 
-    Rectangle *rectangle = create_rectangle(largeur, longueur, point, style);
+    Rectangle *rectangle = create_rectangle(width, length, point, style);
     if (rectangle == NULL)
     {
         free_point(point);
@@ -416,15 +416,15 @@ Rectangle *ask_for_rectangle(void)
 }
 
 /**
- * @brief Asks the user for a Ligne structure with its properties.
+ * @brief Asks the user for a Line structure with its properties.
  *
  * This function prompts the user to enter the coordinates of points A and B,
- * as well as the style for a Ligne structure. It then creates and returns a new
- * Ligne structure with the provided values.
+ * as well as the style for a Line structure. It then creates and returns a new
+ * Line structure with the provided values.
  *
- * @return A pointer to the newly created Ligne structure, or NULL if memory allocation fails.
+ * @return A pointer to the newly created Line structure, or NULL if memory allocation fails.
  */
-Ligne *ask_for_ligne(void)
+Line *ask_for_line(void)
 {
     Point *point_a = ask_for_point();
     if (point_a == NULL)
@@ -443,12 +443,12 @@ Ligne *ask_for_ligne(void)
         return NULL;
     }
 
-    Ligne *ligne = create_ligne(point_a, point_b, style);
-    if (ligne == NULL)
+    Line *line = create_line(point_a, point_b, style);
+    if (line == NULL)
     {
         free_point(point_a);
         free_point(point_b);
         free_style(style);
     }
-    return ligne;
+    return line;
 }

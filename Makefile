@@ -7,7 +7,7 @@ SRC = main.c Modification.c svg.c the_almighty.c
 
 all: $(TARGET)
 
-$(TARGET): $(SRC) formes.h
+$(TARGET): $(SRC) shapes.h
 	$(CC) $(CFLAGS) $(SRC) -o $@
 
 build: $(TARGET)

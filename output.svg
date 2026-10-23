@@ -1,5 +1,3 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1000" viewBox="0 0 1000 1000">
-  <rect x="340.00" y="340.00" width="340.00" height="340.00" fill="red" stroke="blue" transform="translate(45.00 0) rotate(40.00)" />
-  <ellipse cx="45.00" cy="56.00" rx="340.00" ry="340.00" fill="red" stroke="blue" transform="translate(60.00 0) rotate(0.00)" />
 </svg>

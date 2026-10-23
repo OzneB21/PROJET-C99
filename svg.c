@@ -12,7 +12,7 @@
  * @param color The character representing the color (e.g., 'r' for red, 'g' for green).
  * @return A string representing the SVG color name.
  */
-static const char *svg_color(char color)
+char *svg_color(char color)
 {
     switch (color)
     {
@@ -56,7 +56,7 @@ static const char *svg_color(char color)
  * @param style Pointer to the Style structure containing the style properties.
  * @param fill The fill color for the SVG element.
  */
-static void svg_style(FILE *file, Style *style, const char *fill)
+void svg_style(FILE *file, Style *style, const char *fill)
 {
     const char *stroke = style == NULL ? "black" : svg_color(style->color_border);
     float translate = style == NULL ? 0.0f : style->translate;
@@ -67,30 +67,29 @@ static void svg_style(FILE *file, Style *style, const char *fill)
 }
 
 /**
- * @brief Creates a new Forme structure based on user input.
+ * @brief Creates a new Shape structure based on user input.
  *
- * This function prompts the user to select a shape type (Rectangle, Ovale, or Ligne)
+ * This function prompts the user to select a shape type (Rectangle, Oval, or Line)
  * and gathers the necessary properties for the selected shape. It then creates and
- * returns a new Forme structure containing the selected shape and its properties.
+ * returns a new Shape structure containing the selected shape and its properties.
  *
- * @return A pointer to the newly created Forme structure, or NULL if memory allocation fails or the shape is not available.
+ * @return A pointer to the newly created Shape structure, or NULL if memory allocation fails or the shape is not available.
  */
-Forme *create_shape()
+Shape *create_shape()
 {
-    Forme *forme = calloc(1, sizeof(Forme));
-    if (forme == NULL)
+    Shape *shape = calloc(1, sizeof(Shape));
+    if (shape == NULL)
         return NULL;
-    // Creer l'enum et demander a l'utilisateur quelle forme ?
 
-    printf(" 1.LIGNE\n  2.OVALE\n  3.RECTANGLE\n");
+    printf(" 1.LINE\n  2.OVAL\n  3.RECTANGLE\n");
     int choice = ask_for_int("Which shape do you choose?\n");
-    EnumFormes *enum_forme = malloc(sizeof(EnumFormes));
-    UnionFormes *union_forme = malloc(sizeof(UnionFormes));
-    if (enum_forme == NULL || union_forme == NULL)
+    EnumShapes *enum_shape = malloc(sizeof(EnumShapes));
+    UnionShapes *union_shape = malloc(sizeof(UnionShapes));
+    if (enum_shape == NULL || union_shape == NULL)
     {
-        free(enum_forme);
-        free(union_forme);
-        free(forme);
+        free(enum_shape);
+        free(union_shape);
+        free(shape);
         return NULL;
     }
 
@@ -98,89 +97,89 @@ Forme *create_shape()
     switch (choice)
     {
     case 1:
-        *enum_forme = LIGNE;
-        union_forme->ligne = ask_for_ligne();
+        *enum_shape = LINE;
+        union_shape->line = ask_for_line();
         break;
 
     case 2:
-        *enum_forme = OVALE;
-        union_forme->ovale = ask_for_ovale();
+        *enum_shape = OVAL;
+        union_shape->oval = ask_for_oval();
         break;
 
     case 3:
-        *enum_forme = RECTANGLE;
-        union_forme->rectangle = ask_for_rectangle();
+        *enum_shape = RECTANGLE;
+        union_shape->rectangle = ask_for_rectangle();
         break;
 
     default:
         printf("Shape not available");
-        free(enum_forme);
-        free(union_forme);
-        free(forme);
+        free(enum_shape);
+        free(union_shape);
+        free(shape);
         return NULL;
     }
 
-    if ((*enum_forme == LIGNE && union_forme->ligne == NULL) ||
-        (*enum_forme == OVALE && union_forme->ovale == NULL) ||
-        (*enum_forme == RECTANGLE && union_forme->rectangle == NULL))
+    if ((*enum_shape == LINE && union_shape->line == NULL) ||
+        (*enum_shape == OVAL && union_shape->oval == NULL) ||
+        (*enum_shape == RECTANGLE && union_shape->rectangle == NULL))
     {
-        free(enum_forme);
-        free(union_forme);
-        free(forme);
+        free(enum_shape);
+        free(union_shape);
+        free(shape);
         return NULL;
     }
 
-    // Creer l'union + mettre la forme dans l'union
-    forme->enumformes = enum_forme;
-    forme->unionformes = union_forme;
-    return forme;
+    // Creer l'union + mettre la shape dans l'union
+    shape->enumshapes = enum_shape;
+    shape->unionshapes = union_shape;
+    return shape;
 }
 
 /**
- * @brief Modifies the properties of a Forme structure based on user input.
+ * @brief Modifies the properties of a Shape structure based on user input.
  *
- * This function checks the type of shape contained in the Forme structure and
- * calls the appropriate modification function for that shape (Ligne, Ovale, or Rectangle).
+ * This function checks the type of shape contained in the Shape structure and
+ * calls the appropriate modification function for that shape (Line, Oval, or Rectangle).
  * The user can modify the properties of the shape through a menu-driven interface.
  *
- * @param forme Pointer to the Forme structure to be modified.
+ * @param shape Pointer to the Shape structure to be modified.
  */
-void modify_shape(Forme *forme)
+void modify_shape(Shape *shape)
 {
-    if (forme == NULL || forme->enumformes == NULL || forme->unionformes == NULL)
+    if (shape == NULL || shape->enumshapes == NULL || shape->unionshapes == NULL)
         return;
-    switch (*forme->enumformes)
+    switch (*shape->enumshapes)
     {
-    case LIGNE:
-        modify_ligne(forme->unionformes->ligne);
+    case LINE:
+        modify_line(shape->unionshapes->line);
         break;
-    case OVALE:
-        modify_ovale(forme->unionformes->ovale);
+    case OVAL:
+        modify_oval(shape->unionshapes->oval);
         break;
     case RECTANGLE:
-        modify_rectangle(forme->unionformes->rectangle);
+        modify_rectangle(shape->unionshapes->rectangle);
         break;
 
     default:
         break;
     }
 }
-void print_formes(Forme *forme)
+void print_shapes(Shape *shape)
 {
-    if (forme == NULL)
+    if (shape == NULL)
         return;
-    switch (*forme->enumformes)
+    switch (*shape->enumshapes)
     {
-    case LIGNE:
-        print_Ligne(forme->unionformes->ligne);
+    case LINE:
+        print_Line(shape->unionshapes->line);
         break;
 
-    case OVALE:
-        print_Ovale(forme->unionformes->ovale);
+    case OVAL:
+        print_Oval(shape->unionshapes->oval);
         break;
 
     case RECTANGLE:
-        print_Rectangle(forme->unionformes->rectangle);
+        print_Rectangle(shape->unionshapes->rectangle);
         break;
 
     default:
@@ -188,151 +187,151 @@ void print_formes(Forme *forme)
     }
 }
 
-void free_forme(Forme *forme)
+void free_shape(Shape *shape)
 {
-    if (forme == NULL)
+    if (shape == NULL)
         return;
 
     // free le contenu avant
-    if (forme->enumformes != NULL && forme->unionformes != NULL)
+    if (shape->enumshapes != NULL && shape->unionshapes != NULL)
     {
-        switch (*forme->enumformes)
+        switch (*shape->enumshapes)
         {
-        case LIGNE:
-            free_ligne(forme->unionformes->ligne);
+        case LINE:
+            free_line(shape->unionshapes->line);
             break;
-        case OVALE:
-            free_ovale(forme->unionformes->ovale);
+        case OVAL:
+            free_oval(shape->unionshapes->oval);
             break;
         case RECTANGLE:
-            free_rectangle(forme->unionformes->rectangle);
+            free_rectangle(shape->unionshapes->rectangle);
             break;
         default:
             break;
         }
     }
 
-    free(forme->enumformes);
-    free(forme->unionformes);
-    free(forme);
+    free(shape->enumshapes);
+    free(shape->unionshapes);
+    free(shape);
 }
 
 /**
- * @brief Creates an array of Forme pointers to represent an SVG canvas.
+ * @brief Creates an array of Shape pointers to represent an SVG canvas.
  *
- * This function allocates memory for an array of Forme pointers, with a capacity
+ * This function allocates memory for an array of Shape pointers, with a capacity
  * defined by SVG_CAPACITY. Each element in the array is initialized to NULL.
  *
- * @return A pointer to the newly created array of Forme pointers, or NULL if memory allocation fails.
+ * @return A pointer to the newly created array of Shape pointers, or NULL if memory allocation fails.
  */
-Forme **create_svg()
+Shape **create_svg()
 {
-    Forme **forme = malloc(SVG_CAPACITY * sizeof(Forme *));
-    if (forme == NULL)
+    Shape **shape = malloc(SVG_CAPACITY * sizeof(Shape *));
+    if (shape == NULL)
         return NULL;
     for (size_t i = 0; i < SVG_CAPACITY; i++)
-        forme[i] = NULL;
-    return forme;
+        shape[i] = NULL;
+    return shape;
 }
 
-void insert_new_shape_at(Forme **forme, size_t index)
+void insert_new_shape_at(Shape **shape, size_t index)
 {
-    if (forme == NULL)
+    if (shape == NULL)
         return;
     if (index >= SVG_CAPACITY)
         return;
-    Forme *new_forme = create_shape();
-    if (new_forme == NULL)
+    Shape *new_shape = create_shape();
+    if (new_shape == NULL)
         return;
-    free_forme(forme[index]);
-    forme[index] = new_forme;
+    free_shape(shape[index]);
+    shape[index] = new_shape;
 }
 
 /**
- * @brief Modifies the properties of a Forme structure at a specified index in an array.
+ * @brief Modifies the properties of a Shape structure at a specified index in an array.
  *
- * This function checks if the provided index is valid and if the Forme pointer at that
+ * This function checks if the provided index is valid and if the Shape pointer at that
  * index is not NULL. If both conditions are met, it calls the modify_shape function to
- * allow the user to modify the properties of the Forme structure at that index.
+ * allow the user to modify the properties of the Shape structure at that index.
  *
- * @param forme An array of Forme pointers representing the SVG canvas.
- * @param index The index of the Forme structure to be modified.
+ * @param shape An array of Shape pointers representing the SVG canvas.
+ * @param index The index of the Shape structure to be modified.
  */
-void modify_shape_at(Forme **forme, size_t index)
+void modify_shape_at(Shape **shape, size_t index)
 {
-    if (forme == NULL)
+    if (shape == NULL)
         return;
     if (index >= SVG_CAPACITY)
         return;
-    Forme *forme_to_modify = forme[index];
-    modify_shape(forme_to_modify);
+    Shape *shape_to_modify = shape[index];
+    modify_shape(shape_to_modify);
 }
 
 /**
- * @brief Removes a Forme structure at a specified index in an array.
+ * @brief Removes a Shape structure at a specified index in an array.
  *
- * This function checks if the provided index is valid and if the Forme pointer at that
+ * This function checks if the provided index is valid and if the Shape pointer at that
  * index is not NULL. If both conditions are met, it frees the memory allocated for the
- * Forme structure at that index and sets the pointer to NULL.
+ * Shape structure at that index and sets the pointer to NULL.
  *
- * @param forme An array of Forme pointers representing the SVG canvas.
- * @param index The index of the Forme structure to be removed.
+ * @param shape An array of Shape pointers representing the SVG canvas.
+ * @param index The index of the Shape structure to be removed.
  */
-void remove_shape_at(Forme **forme, size_t index)
+void remove_shape_at(Shape **shape, size_t index)
 {
-    if (forme == NULL || index >= SVG_CAPACITY)
+    if (shape == NULL || index >= SVG_CAPACITY)
         return;
-    free_forme(forme[index]);
-    forme[index] = NULL;
+    free_shape(shape[index]);
+    shape[index] = NULL;
 }
 
 /**
- * @brief Frees the memory allocated for an array of Forme pointers.
+ * @brief Frees the memory allocated for an array of Shape pointers.
  *
- * This function iterates through the array of Forme pointers, freeing each
- * individual Forme structure using the free_forme function. After all
- * Forme structures have been freed, it frees the memory allocated for the
+ * This function iterates through the array of Shape pointers, freeing each
+ * individual Shape structure using the free_shape function. After all
+ * Shape structures have been freed, it frees the memory allocated for the
  * array itself.
  *
- * @param forme An array of Forme pointers representing the SVG canvas.
+ * @param shape An array of Shape pointers representing the SVG canvas.
  */
-void free_svg(Forme **forme)
+void free_svg(Shape **shape)
 {
-    if (forme == NULL)
+    if (shape == NULL)
         return;
 
     for (size_t i = 0; i < SVG_CAPACITY; i++)
-        free_forme(forme[i]);
-    free(forme);
+        free_shape(shape[i]);
+    free(shape);
 }
 
 /**
- * @brief Prints the properties of all Forme structures in an array to the console.
+ * @brief Prints the properties of all Shape structures in an array to the console.
  *
- * This function iterates through the array of Forme pointers and calls the
- * print_formes function for each non-NULL Forme structure, displaying their
+ * This function iterates through the array of Shape pointers and calls the
+ * print_shapes function for each non-NULL Shape structure, displaying their
  * properties to the console.
  *
- * @param forme An array of Forme pointers representing the SVG canvas.
+ * @param shape An array of Shape pointers representing the SVG canvas.
  */
-void print_svg(Forme **forme)
+void print_svg(Shape **shape)
 {
-    if (forme == NULL)
+    if (shape == NULL)
         return;
 
     for (size_t i = 0; i < SVG_CAPACITY; i++)
-        if (forme[i] != NULL)
-            print_formes(forme[i]);
+        if (shape[i] != NULL)
+            print_shapes(shape[i]);
 }
 
 /**
- * @brief Exports the properties of all Forme structures in an array to an SVG file.
+ * @brief Exports the properties of all Shape structures in an array to an SVG file.
  *
  * This function creates an SVG file with the specified filename and writes the
- * properties of each Forme structure in the array to the file in SVG format.
+ * properties of each Shape structure in the array to the file in SVG format.
  * It handles errors related to file operations and returns an appropriate error code.
  *
- * @param forme An array of Forme pointers representing the SVG canvas.
+ * @param shape An array of Shape pointers representing the SVG canvas.
  * @param filename The name of the SVG file to be created.
  * @return 0 on success, -1 on failure (with errno set).
  */
@@ -342,45 +341,45 @@ void svg_rectangle(FILE *file, Rectangle *rectangle)
         return;
 
     fprintf(file, "  <rect x=\"%.2f\" y=\"%.2f\" width=\"%.2f\" height=\"%.2f\"",
-            rectangle->A->x, rectangle->A->y, rectangle->largeur, rectangle->longueur);
+            rectangle->A->x, rectangle->A->y, rectangle->width, rectangle->length);
     svg_style(file, rectangle->S,
               rectangle->S == NULL ? "black" : svg_color(rectangle->S->color));
     fprintf(file, " />\n");
 }
 
 /**
- * @brief Writes the properties of an Ovale structure to an SVG file.
+ * @brief Writes the properties of an Oval structure to an SVG file.
  *
- * This function generates the SVG representation of an Ovale structure and writes
+ * This function generates the SVG representation of an Oval structure and writes
  * it to the specified file. It includes the center coordinates, radii, and style
- * attributes for the Ovale.
+ * attributes for the Oval.
  *
  * @param file The file pointer to write the SVG representation to.
- * @param ovale Pointer to the Ovale structure to be exported.
+ * @param oval Pointer to the Oval structure to be exported.
  */
-void svg_ovale(FILE *file, Ovale *ovale)
+void svg_oval(FILE *file, Oval *oval)
 {
-    if (file == NULL || ovale == NULL || ovale->A == NULL)
+    if (file == NULL || oval == NULL || oval->A == NULL)
         return;
 
     fprintf(file, "  <ellipse cx=\"%.2f\" cy=\"%.2f\" rx=\"%.2f\" ry=\"%.2f\"",
-            ovale->A->x, ovale->A->y, ovale->rayon_largeur, ovale->rayon_hauteur);
-    svg_style(file, ovale->S,
-              ovale->S == NULL ? "black" : svg_color(ovale->S->color));
+            oval->A->x, oval->A->y, oval->width_radius, oval->height_radius);
+    svg_style(file, oval->S,
+              oval->S == NULL ? "black" : svg_color(oval->S->color));
     fprintf(file, " />\n");
 }
 
 /**
- * @brief Writes the properties of a Ligne structure to an SVG file.
+ * @brief Writes the properties of a Line structure to an SVG file.
  *
- * This function generates the SVG representation of a Ligne structure and writes
+ * This function generates the SVG representation of a Line structure and writes
  * it to the specified file. It includes the coordinates of the two endpoints
- * and style attributes for the Ligne.
+ * and style attributes for the Line.
  *
  * @param file The file pointer to write the SVG representation to.
- * @param line Pointer to the Ligne structure to be exported.
+ * @param line Pointer to the Line structure to be exported.
  */
-void svg_line(FILE *file, Ligne *line)
+void svg_line(FILE *file, Line *line)
 {
     if (file == NULL || line == NULL || line->A == NULL || line->B == NULL)
         return;
@@ -392,19 +391,19 @@ void svg_line(FILE *file, Ligne *line)
 }
 
 /**
- * @brief Exports the properties of all Forme structures in an array to an SVG file.
+ * @brief Exports the properties of all Shape structures in an array to an SVG file.
  *
  * This function creates an SVG file with the specified filename and writes the
- * properties of each Forme structure in the array to the file in SVG format.
+ * properties of each Shape structure in the array to the file in SVG format.
  * It handles errors related to file operations and returns an appropriate error code.
  *
- * @param forme An array of Forme pointers representing the SVG canvas.
+ * @param shape An array of Shape pointers representing the SVG canvas.
  * @param filename The name of the SVG file to be created.
  * @return 0 on success, -1 on failure (with errno set).
  */
-int export_svg(Forme **forme, const char *filename)
+int export_svg(Shape **form, const char *filename)
 {
-    if (forme == NULL || filename == NULL)
+    if (form == NULL || filename == NULL)
     {
         errno = EINVAL;
         return -1;
@@ -421,20 +420,20 @@ int export_svg(Forme **forme, const char *filename)
 
     for (size_t i = 0; !failed && i < SVG_CAPACITY; i++)
     {
-        Forme *shape = forme[i];
-        if (shape == NULL || shape->enumformes == NULL || shape->unionformes == NULL)
+        Shape *shape = form[i];
+        if (shape == NULL || shape->enumshapes == NULL || shape->unionshapes == NULL)
             continue;
 
-        switch (*shape->enumformes)
+        switch (*shape->enumshapes)
         {
         case RECTANGLE:
-            svg_rectangle(file, shape->unionformes->rectangle);
+            svg_rectangle(file, shape->unionshapes->rectangle);
             break;
-        case OVALE:
-            svg_ovale(file, shape->unionformes->ovale);
+        case OVAL:
+            svg_oval(file, shape->unionshapes->oval);
             break;
-        case LIGNE:
-            svg_line(file, shape->unionformes->ligne);
+        case LINE:
+            svg_line(file, shape->unionshapes->line);
             break;
         default:
             continue;
